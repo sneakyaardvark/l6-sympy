@@ -18,12 +18,18 @@ def problem_1a():
 
 def problem_1b():
     x, y, t1, t2 = sympy.symbols("x, y, t1, t2")
-    fx = 4 * sympy.cos(t1) + 3 * sympy.cos(t2) - x
+    fx = 4 * sympy.cos(t1) + 3 * sympy.cos(t2) - 6
     fy = 4 * sympy.sin(t1) + 3 * sympy.sin(t2) - y
 
-    f1 = sympy.solve(fy, t1)
-    f2 = sympy.solve(fy, t2)
-    sympy.pprint([f1, f2])
+    ft1 = sympy.solve(fx, t1, dict=True)
+    ft2 = sympy.solve(fx, t2, dict=True)
+
+    # f1 = sympy.solve([ft, fy], t2)
+    f1 = fy.subs(ft1[1])
+    a1 = sympy.solve(f1, t2)
+    f2 = fy.subs(ft2[1])
+    a2 = sympy.solve(f2, t1)
+    sympy.pprint([a1[0], a2[0]])
 
 
 if __name__ == "__main__":
