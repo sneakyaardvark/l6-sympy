@@ -1,5 +1,7 @@
 import sympy
 from math import degrees
+from sympy.physics.control.lti import TransferFunction
+from sympy.physics.control import control_plots as cplot
 
 
 def problem_1a():
@@ -29,8 +31,34 @@ def problem_1b():
     a1 = sympy.solve(f1, t2)
     f2 = fy.subs(ft2[1])
     a2 = sympy.solve(f2, t1)
+
+    # p = sympy.plot(a2[1], show=False)
+    # p.show()
     sympy.pprint([a1[0], a2[0]])
 
 
+def example_2():
+    """
+    Part II example before problem 2
+    """
+    s = sympy.symbols("s")
+    n = s - 1
+    d = s**2 - 3*s + 4
+    sys = TransferFunction(n, d, s)
+    cplot.bode_plot(sys)
+
+
+def problem_2b():
+    r, s, c, l, w = sympy.symbols("r, s, c, l, w")
+    n = r * s * c
+    d = (s**2 * l * c + r * c * s + 1)
+    h = TransferFunction(n, d, s)
+    t = h.num.subs({s: sympy.I * w})  # subs() for TransferFunction doesn't seem to work?
+
+
+def problem_2c():
+    pass
+
+
 if __name__ == "__main__":
-    problem_1b()
+    problem_2b()
