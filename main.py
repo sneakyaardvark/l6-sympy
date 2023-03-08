@@ -49,11 +49,18 @@ def example_2():
 
 
 def problem_2b():
-    r, s, c, l, w = sympy.symbols("r, s, c, l, w")
+    def magnitude(function):
+        return sympy.sqrt(sympy.re(function)**2 + sympy.im(function)**2)
+
+    r, s, c, l, w = sympy.symbols("r, s, c, l, w", real=True)
     n = r * s * c
     d = (s**2 * l * c + r * c * s + 1)
-    h = TransferFunction(n, d, s)
-    t = h.num.subs({s: sympy.I * w})  # subs() for TransferFunction doesn't seem to work?
+    n = n.subs({s: sympy.I * w})
+    d = d.subs({s: sympy.I * w})
+    n_mag = sympy.Abs(n)
+    d_mag = sympy.Abs(d)
+    h = TransferFunction(n_mag.collect(w), d_mag.collect(w), w)
+    sympy.pprint(h)
 
 
 def problem_2c():
