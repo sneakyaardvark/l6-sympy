@@ -3,7 +3,7 @@ from math import degrees
 
 from sympy.physics.control.lti import TransferFunction
 from sympy.physics.control import control_plots as cplot
-from numpy import linspace
+
 
 def problem_1a():
     x, y, t1, t2 = sympy.symbols("x, y, t1, t2")
@@ -23,7 +23,6 @@ def problem_1b2():
     x, y, t1, t2 = sympy.symbols("x, y, t1, t2")
     fx = 4 * sympy.cos(t1) + 3 * sympy.cos(t2) - 6
     fy = 4 * sympy.sin(t1) + 3 * sympy.sin(t2) - y
-    # ans = [sympy.solve([fx, fy.subs({y: i})], (t1, t2)) for i in linspace(0.1, 3.6)]
     sympy.pprint(sympy.solve([fx, fy.subs({y: 2})], (t1, t2)))
 
 
@@ -52,21 +51,10 @@ def problem_1b():
     # sympy.pprint([a1[0], a2[0]])
 
 
-def example_2():
-    """
-    Part II example before problem 2
-    """
-    s = sympy.symbols("s")
-    n = s - 1
-    d = s**2 - 3*s + 4
-    sys = TransferFunction(n, d, s)
-    cplot.bode_plot(sys)
-
-
 def problem_2b():
     r, s, c, l, w = sympy.symbols("r, s, c, l, w", real=True)
-    n = (r*w)/l
-    d = sympy.sqrt((1 / (l * c) - w**2)**2 + (r*w/l)**2)
+    n = (r * w) / l
+    d = sympy.sqrt((1 / (l * c) - w ** 2) ** 2 + (r * w / l) ** 2)
     h = n / d
     values = {
         c: 10e-6,
@@ -89,7 +77,8 @@ def problem_2b():
 
 
 def problem_2c():
-    r, s, c, l, w = sympy.symbols("r, s, c, l, w", real=True)
+    s = sympy.symbols("s")
+    r, c, l, w = sympy.symbols("r, c, l, w", real=True)
     n = (r * w) / l
     d = sympy.sqrt((1 / (l * c) - w ** 2) ** 2 + (r * w / l) ** 2)
     h = TransferFunction(n, d, w)
@@ -110,9 +99,15 @@ def problem_2c():
 
 
 def problem_2e():
-    v_r, t, r, l, c, v_i = sympy.symbols("v_r, t, r, l, c, v_i")
-    diff = sympy.Derivative()
+    t, r, l, c = sympy.symbols("t, r, l, c", real=True)
+    v_r, v_i = sympy.symbols("v_r, v_i", cls=sympy.Function)
+    deriv2_v_r = sympy.Derivative(v_r(t), t, 2)
+    deriv_v_r = sympy.Derivative(v_r(t), t)
+    f = deriv2_v_r + (r / l) * deriv_v_r + (v_r(t) / (l * c))
+    ans = sympy.dsolve(f)
+    sympy.pprint(ans)
 
 
 if __name__ == "__main__":
-    problem_1b2()
+    sympy.init_printing(use_unicode=True)
+    problem_2e()
