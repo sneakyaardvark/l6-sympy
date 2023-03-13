@@ -21,13 +21,6 @@ def problem_1a():
         )
 
 
-def problem_1b2():
-    x, y, t1, t2 = sympy.symbols("x, y, t1, t2")
-    fx = 4 * sympy.cos(t1) + 3 * sympy.cos(t2) - 6
-    fy = 4 * sympy.sin(t1) + 3 * sympy.sin(t2) - y
-    sympy.pprint(sympy.solve([fx, fy.subs({y: 2})], (t1, t2)))
-
-
 def problem_1b():
     y, t1, t2 = sympy.symbols("y, t1, t2", real=True)
     fx = 4 * sympy.cos(t1) + 3 * sympy.cos(t2) - 6
@@ -47,7 +40,11 @@ def problem_1b():
     # account for t2 = theta1 + theta2
     a2 = a2[0] - a1[0]
 
-    plt_theta1 = sympy.plot(a1[0], (y, 0.1, 3.6), show=False)
+    # rad -> deg
+    a1 = (a1[0] * 180) / sympy.pi
+    a2 = (a2 * 180) / sympy.pi
+
+    plt_theta1 = sympy.plot(a1, (y, 0.1, 3.6), show=False)
     plt_theta1.ylabel = r"$\theta_1$ (degrees)"
     plt_theta2 = sympy.plot(a2, (y, 0.1, 3.6), show=False)
     plt_theta2.ylabel = r"$\theta_2$ (degrees)"
@@ -130,4 +127,4 @@ def problem_2e():
 
 if __name__ == "__main__":
     sympy.init_printing(use_unicode=True)
-    problem_2c()
+    problem_1b()
